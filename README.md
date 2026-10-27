@@ -11,9 +11,9 @@
 - `/pull-request`- Writes the description for a pull request.
 - `/commit`- Turns file changes into commits.
 
-## Others
+## From pstack
 
-Not in this repo, worth having anyway. 
+Copied from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack)
 
-- [/bro](https://github.com/cursor/plugins/tree/main/pstack/skills/bro)  - restates the last message in plain language, no jargon.
-- [/unslop](https://github.com/cursor/plugins/tree/main/pstack/skills/unslop) - cuts AI tells from writing.
+- `/bro`- Restates the last message in plain language, no jargon.
+- `/unslop`- Cuts AI tells from writing.
