@@ -7,13 +7,15 @@ description: Has a fresh read-only subagent research a task and write an impleme
 
 ## Read the arguments
 
-Leading words that `/sub` takes as a model or an effort pass through to it unchanged. Without them, use `opus medium`. The permission mode is always `plan`; if the user named another one, ignore it and say so. Whatever follows the settings is the task. If nothing follows, take the task from the conversation, and if there's none there either, ask for one.
+Leading words that `/sub` takes as a model or an effort pass through to it unchanged. Without them, use `opus medium`. The permission mode is always `plan`; if the user named another one, ignore it and say so. Whatever follows the settings is the task: a description, or a path to a file that holds it. If nothing follows, take the task from the conversation, and if there's none there either, ask for one.
 
 ## Hand it to /sub
 
-Invoke the `sub` skill with the settings, then `plan`, then the task followed by the instructions below. `/sub` writes the task into a brief and adds what the subagent needs from this conversation, so pass the task in the user's words and don't research it yourself first.
+Invoke the `sub` skill with the settings, then `plan`, then the task followed by the instructions below. `/sub` writes the task into a brief and adds what the subagent needs from this conversation, so pass the task in the user's words and don't research it yourself first. When the task is a file, pass its path and don't read it: the subagent reads the exact text, and nothing gets reworded on the way.
 
 > Research the codebase for this task and write an implementation plan for it. Read the files the change touches and the code it should reuse, so the plan names real paths and functions. Don't ask questions: a gap you can't settle goes under `## Open Questions`.
+>
+> If the task comes with settled decisions, they bind the plan: follow them, don't reopen them. If it comes with an out-of-scope list, carry every item into the plan's `## Out of Scope`. If it says what done looks like, every one of those checks goes into `## Verification` with its expected result.
 >
 > Return the plan as your final message, in this shape and nothing after it:
 >
@@ -49,7 +51,7 @@ Invoke the `sub` skill with the settings, then `plan`, then the task followed by
 
 ## Save it
 
-The subagent can't write files, so you save the plan. Write it verbatim to `~/.claude/plans/<slug>.md`, where `<slug>` is the title in lowercase kebab-case. Add a number if the file already exists. If the subagent returned something that isn't a plan, such as a blocker or a question, don't save it: show it to the user instead.
+The subagent can't write files, so you save the plan, verbatim. If the caller named a path for the plan, save it there, overwriting an earlier draft. Otherwise save it to `~/.claude/plans/<slug>.md`, where `<slug>` is the title in lowercase kebab-case, and add a number if the file already exists. If the subagent returned something that isn't a plan, such as a blocker or a question, don't save it: show it to the user instead.
 
 ## Report
 
