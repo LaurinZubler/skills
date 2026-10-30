@@ -94,24 +94,32 @@ Invoke `/sub` with `opus medium` and this brief, filling in the base branch you 
 
 > Review the change on the current branch for bugs. Don't change any code. Base branch: `<base>`. The build <committed its work: list the commits | left its work uncommitted in the working tree>.
 >
-> Check your scope first. With commits, `git log <base>..HEAD --oneline` has to list them. Uncommitted, `git status --porcelain` has to come back non-empty. Either way, an empty scope means the target is wrong rather than the code being clean, so stop and report that instead of returning an empty table.
+> Check your scope first. With commits, `git log <base>..HEAD --oneline` has to list them. Uncommitted, `git status --porcelain` has to come back non-empty. Either way, an empty scope means the target is wrong rather than the code being clean, so stop and report that instead of returning an empty findings document.
 >
 > Then run `/code-review medium --max-findings all <base>` with commits, or `/code-review medium --max-findings all` with no target when the work is uncommitted. Don't pass `--comment` or `--fix`. Run it yourself, and don't spawn other reviewers.
 >
-> The review reports through the `ReportFindings` tool, so transcribe what it reports into this table, keeping its order, which is most severe first:
+> The review reports through the `ReportFindings` tool. Transcribe every finding it reports into this document, keeping its order, which is most severe first. Copy `summary` and `failure_scenario` word for word: don't shorten, merge or drop findings. If the review's own text adds a fix suggestion or a further consequence for a finding, put it under that finding. A finding is a `bug` when it makes the code behave wrongly, and a `cleanup` when it only concerns efficiency, reuse or simplification.
 >
 > ```markdown
-> | #   | Category            | Finding                               |
-> | --- | ------------------- | ------------------------------------- |
-> | 1   | <its category slug> | <finding, with a file:line reference> |
+> # Findings
+>
+> Base: `<base>` · Scope: <the commits | uncommitted working tree> · Review: `/code-review medium`
+>
+> ## 1. <short_summary>
+>
+> - **Kind:** <bug | cleanup> · **Category:** <its category slug> · **Verdict:** <its verdict, or `unverified` when it has none>
+> - **Where:** `<file>:<line>`
+> - **Problem:** <summary>
+> - **Breaks when:** <failure_scenario>
+> - **Fix hint:** <the review's suggested fix; leave this line out when it gave none>
 > ```
 >
-> Return the table and nothing else.
+> When the review reports nothing, return the header followed by `No findings.` Return this document and nothing else.
 
-Write the table it returns to `findings.md` in the run folder, verbatim.
+Write the document it returns to `findings.md` in the run folder, verbatim.
 
 ### Report
 
-Show the user the build report and the findings table, then stop. develop is done. What to do about the findings is the user's call, and the numbered rows are there so they can point at the ones they want. When the work was left uncommitted, say that plainly and offer to commit it, rather than reporting as though it had landed.
+Show the user the build report and the findings, then stop. develop is done. What to do about the findings is the user's call, and the numbered findings are there so they can point at the ones they want. When the work was left uncommitted, say that plainly and offer to commit it, rather than reporting as though it had landed.
 
-Then resolve the run folder. Judge it from `report.md` and `findings.md`, not from memory, since the conversation may have been compacted since. A run is clean when the findings table is empty and the report lists no deviations and nothing left undone: delete `.develop/<feature>/` and say you did, since git history is the record from there. Otherwise keep the folder and name its absolute path, so the user can find the findings, the report, and the context and plan behind them.
+Then resolve the run folder. Judge it from `report.md` and `findings.md`, not from memory, since the conversation may have been compacted since. A run is clean when `findings.md` lists no findings and the report lists no deviations and nothing left undone: delete `.develop/<feature>/` and say you did, since git history is the record from there. Otherwise keep the folder and name its absolute path, so the user can find the findings, the report, and the context and plan behind them.
