@@ -78,6 +78,6 @@ Show it to the user and ask if they want to continue.
 
 Return the summary. It's the whole product of this skill, and whatever comes next, a plan, a build, or nothing, works from it.
 
-Write no file. The summary stays in the conversation, and a calling skill that needs it on disk, such as develop, saves it itself.
+Write no file. The summary stays in the conversation.
 
 When another skill invoked you, stop there. Its pipeline carries the summary onward and it has its own stops for the user, so don't add one it didn't ask for.

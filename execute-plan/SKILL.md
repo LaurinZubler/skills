@@ -14,7 +14,7 @@ Leading words that `/sub` takes as settings (a model, an effort, or a permission
 Take the first of these that exists:
 
 1. A path or plan the user passed as the argument.
-2. A plan shown earlier in this conversation, such as the one `/write-plan` returned. Pass it inline, verbatim.
+2. A plan shown earlier in this conversation. Pass it inline, verbatim.
 3. The plan file this conversation wrote or approved in plan mode, under `~/.claude/plans/`.
 4. The most recently modified file in `~/.claude/plans/`. Say which file you picked, since it's a guess.
 

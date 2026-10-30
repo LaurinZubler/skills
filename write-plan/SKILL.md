@@ -51,8 +51,8 @@ Invoke the `sub` skill with the settings, then `plan`, then the task followed by
 
 ## Report
 
-Return the plan verbatim. Don't save it: the plan stays in the conversation, and a caller that needs it on disk, such as develop, writes it itself. If the subagent returned something that isn't a plan, such as a blocker or a question, show that instead.
+Return the plan verbatim. Don't save it: the plan stays in the conversation. If the subagent returned something that isn't a plan, such as a blocker or a question, show that instead.
 
 When another skill invoked you, stop there. It has its own stops for the user, so don't add one it didn't ask for.
 
-Otherwise put the Open Questions first if there are any, since they decide whether the plan is ready. Then say the plan runs with `/execute-plan` in this conversation once they approve it. Don't execute it yourself.
+Otherwise put the Open Questions first if there are any, since they decide whether the plan is ready. Don't execute it yourself.
