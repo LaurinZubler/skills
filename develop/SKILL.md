@@ -132,10 +132,10 @@ Everything below this point hands paths to subagents rather than pasted text, so
 
 Create `.develop/<feature>/` and write the approved plan to `plan.md` inside it, verbatim. That file is what every later brief points at for `## Context`, `## Approach`, `## Out of Scope`, and the work units table.
 
-Then start the ledger, `ledger.md` in the same folder, with one line:
+Then start the ledger, `ledger.md` in the same folder, with one entry. Every ledger entry is a Markdown list item, a line starting with `- `, so the file renders one entry per line instead of collapsing into a single paragraph:
 
 ```
-run | branch <branch> | base <base> | plan <absolute path to plan.md>
+- run | branch <branch> | base <base> | plan <absolute path to plan.md>
 ```
 
 Check whether the folder is ignored, with `git check-ignore -q .develop`. If it isn't, say so once in your turn and tell the user the entry to add is `.develop/`. Don't edit `.gitignore` and don't write `.git/info/exclude`: ignoring the folder is the user's call, made once per repo. Say it anyway rather than staying quiet, because implementers commit and one `git add -A` would put the run folder in the repo.
@@ -156,22 +156,22 @@ Skip this spawn when the small-change lane from the preamble applies, and run th
 >
 > You work in **rounds**. Round 1 implements the spec. Each later round implements fixes for what the previous round's review found. You get 3 rounds at most.
 >
-> **0. Read the ledger.** `ledger.md` in the run folder is the record of what has already happened, and it may be a previous life of this same run: your own memory does not survive a compaction, but that file does. Read it before anything else. A unit with a completion line is done, so never dispatch it again, and never re-run a round whose review is already recorded. Pick up from the first thing that isn't finished. On a fresh run the file holds only its `run |` line and you start at step 1.
+> **0. Read the ledger.** `ledger.md` in the run folder is the record of what has already happened, and it may be a previous life of this same run: your own memory does not survive a compaction, but that file does. Read it before anything else. A unit with a completion line is done, so never dispatch it again, and never re-run a round whose review is already recorded. Pick up from the first thing that isn't finished. On a fresh run the file holds only its `- run |` entry and you start at step 1.
 >
-> Append to the ledger as you go, one line per event, oldest first. Write the line for a dispatch *before* you dispatch, since the loss you're guarding against is redoing work; write the line for a result *after* it comes back, since that's when the fact exists. The shape:
+> Append to the ledger as you go, one `- ` list item per event, oldest first, so the file still renders one event per line. Write the line for a dispatch *before* you dispatch, since the loss you're guarding against is redoing work; write the line for a result *after* it comes back, since that's when the fact exists. The shape:
 >
 > ```
-> r1 baseline | suite pass | typecheck pass
-> r1 scan | 3 pairs 2 units | clean
-> r1 ruling <conflict> | <what you decided and why>
-> r1 wave | units 1,2,3
-> r1 unit 1 complete | commits a1b2c3d..e4f5a6b | report r1-unit-1-report.md
-> r1 unit 2 retry | red tests | escalated
-> r1 merged | suite pass | typecheck pass
-> r1 review | standards 3 (1 hard) | spec 1 (1 hard) | head a1b2c3d | r1-review.md
-> r1 fixed <finding> | left <finding> (judgement call, untouched file)
-> r2 rereview | 2 addressed | 1 open | breakage 0 | head e4f5a6b | r2-rereview.md
-> exit clean at r2
+> - r1 baseline | suite pass | typecheck pass
+> - r1 scan | 3 pairs 2 units | clean
+> - r1 ruling <conflict> | <what you decided and why>
+> - r1 wave | units 1,2,3
+> - r1 unit 1 complete | commits a1b2c3d..e4f5a6b | report r1-unit-1-report.md
+> - r1 unit 2 retry | red tests | escalated
+> - r1 merged | suite pass | typecheck pass
+> - r1 review | standards 3 (1 hard) | spec 1 (1 hard) | head a1b2c3d | r1-review.md
+> - r1 fixed <finding> | left <finding> (judgement call, untouched file)
+> - r2 rereview | 2 addressed | 1 open | breakage 0 | head e4f5a6b | r2-rereview.md
+> - exit clean at r2
 > ```
 >
 > **1. Preflight.** Check the ground before you build on it.
