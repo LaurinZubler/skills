@@ -118,8 +118,24 @@ Invoke `/sub` with `opus medium` and this brief, filling in the base branch you 
 
 Write the document it returns to `findings.md` in the run folder, verbatim.
 
+### Check the findings against the intent
+
+The reviewer read the diff without the context or the plan, on purpose: knowing the intent would make it read the code the way the builder did. That also means it can flag a choice the user deliberately made. Match each finding against the intent yourself. This compares documents, not code, so read `context.md`, `plan.md` and `report.md` from the run folder and nothing from the codebase.
+
+Add one line to the end of each finding in `findings.md`, choosing the first case that fits:
+
+```markdown
+- **Against intent:** <one of these>
+  - Settled: "<quote from ## Settled Decisions or the plan>". The finding may flag a deliberate choice.
+  - Out of scope: "<quote from ## Out of Scope>"
+  - Deviation: follows from "<quote of the deviation in report.md>"
+  - New: nothing in the context or plan covers it
+```
+
+Every case except `New` needs a quote, word for word. If you can't point at the text, the finding is `New`. Only add the line: don't drop, reorder or reword a finding. A finding that touches a settled decision can still be a real bug, because the decision may be built wrong or the finding may show a cost nobody weighed, so whether it matters stays the user's call.
+
 ### Report
 
 Show the user the build report and the findings, then stop. develop is done. What to do about the findings is the user's call, and the numbered findings are there so they can point at the ones they want. When the work was left uncommitted, say that plainly and offer to commit it, rather than reporting as though it had landed.
 
-Then resolve the run folder. Judge it from `report.md` and `findings.md`, not from memory, since the conversation may have been compacted since. A run is clean when `findings.md` lists no findings and the report lists no deviations and nothing left undone: delete `.develop/<feature>/` and say you did, since git history is the record from there. Otherwise keep the folder and name its absolute path, so the user can find the findings, the report, and the context and plan behind them.
+Then resolve the run folder. Judge it from `report.md` and `findings.md`, not from memory, since the conversation may have been compacted since. A run is clean when `findings.md` lists no findings, whatever their `Against intent` line says, and the report lists no deviations and nothing left undone: delete `.develop/<feature>/` and say you did, since git history is the record from there. Otherwise keep the folder and name its absolute path, so the user can find the findings, the report, and the context and plan behind them.
