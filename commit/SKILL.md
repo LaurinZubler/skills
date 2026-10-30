@@ -38,9 +38,10 @@ test: cover empty-cart edge case
 
 ```
 git branch --show-current
+git branch -a
 ```
 
-Never create commits directly on `main` or `dev` (or `master`, if that's the repo's trunk name). If the current branch is one of those, stop and tell the user. Don't commit and don't create/switch branches yourself without asking, since branch naming (`feature/…`, `fix/…`, `chore/…`, etc.) and ticket linkage are the user's call. Only proceed with the rest of this workflow once you're on a proper `feature/`, `fix/`, `chore/`, or similarly-scoped branch.
+Never create commits directly on `main` or `dev` (or `master`, if that's the repo's trunk name), unless it's the repository's only branch: no other local or remote branches exist (ignore remote-tracking refs of that same branch, like `origin/main` and `origin/HEAD`). In that case, commit on it. Otherwise, if the current branch is one of those, stop and tell the user. Don't commit and don't create/switch branches yourself without asking, since branch naming (`feature/…`, `fix/…`, `chore/…`, etc.) and ticket linkage are the user's call. Otherwise, only proceed with the rest of this workflow once you're on a proper `feature/`, `fix/`, `chore/`, or similarly-scoped branch.
 
 ## 2. Survey the damage
 
