@@ -30,16 +30,6 @@ Keep going until every item has a decision. Don't batch several items into one q
 
 Deciding is the whole job. Even when an action is a one-line fix, or the user's answer reads like "do it", record it as the decision and move on to the next item. Executing comes after the summary, and only when the user asks for it in a new turn.
 
-## Keep the decisions on disk
-
-Append one line per decision to `triage.md` in the session's scratchpad directory, or in `/tmp` if there isn't one, as soon as it's made:
-
-```
-#<n> | <item, one line> | <decided action>
-```
-
-A long list can outlast your context, and that file is how a compacted session picks up where it left off. If it already exists for this list, read it first and continue from the first undecided item.
-
 ## Summary
 
 Once every item is decided, print the summary as a table in the original order:
@@ -50,4 +40,8 @@ Once every item is decided, print the summary as a table in the original order:
 | 1   | <item, short>  | <decided action> |
 ```
 
-Below it, group the counts by kind of action (e.g. 4 fix, 3 skip, 1 follow-up issue), and give the path of the decisions file. Then stop. Don't start on any action, and don't offer to unless the user asks what comes next.
+Below it, group the counts by kind of action (e.g. 4 fix, 3 skip, 1 follow-up issue). Don't save the summary or the decisions to a file: they stay in the conversation.
+
+The one exception is a list that came from a file as a table. Then also add an `Action` column to that table in the file, with each row's decided action, and leave the rest of the file unchanged. Say that you did it below the summary.
+
+Then stop. Don't start on any action, and don't offer to unless the user asks what comes next.
