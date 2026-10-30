@@ -1,21 +1,30 @@
 # Skills
 
-- `/understand`- Interviews you until the context is clear. Inspired by [Matt Pocock's grilling](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling).
+Agent handling
+
+- `/sub`- Hands a task to a fresh subagent so the work stays out of the main context.
+
+Tools
+
+- `/understand`- Asks questions until the context is clear. Inspired by [Matt Pocock's grilling](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling).
 - `/triage`- Goes through a list to decide an action for each item.
-- `/sub`- Hands a task to a fresh subagent so the work stays out of the main context. Takes the model, effort, and permission mode (auto, edits, ask, or read-only plan) as optional arguments.
-- `/write-plan`- Has `/sub` research a task in plan mode and write an implementation plan, saved where `/execute-plan` finds it.
-- `/execute-plan`- Hands a plan to `/sub`, which implements it in a fresh subagent with only the plan in its context.
-- `/develop`- Builds a feature. Steps:
-  - **Understand** calls `/understand`.
-  - **Plan** turns that into a plan you approve.
-  - **Implement** writes the code using TDD. Inspired by [Matt Pocock's implement](https://github.com/mattpocock/skills/tree/main/skills/engineering/implement).
-  - **Review** hunts for bugs in the finished change.
-- `/pull-request`- Writes the description for a pull request.
+- `/write-plan`- Use `/sub` to write an implementation plan.
+- `/execute-plan`- Use `/sub` to execute a plan.
+
+Workflows
+
+- `/develop`- Builds a simple feature. Steps: `/understand`, `/write-plan`, `/execute-plan`, `/code-review`.
+- `/develop-tdd`- Builds a feature using tdd. Steps: `/understand`, `/write-plan`, `/execute-plan`, `/code-review`. Inspired by [Matt Pocock's implement](https://github.com/mattpocock/skills/tree/main/skills/engineering/implement).
+
+Git
+
 - `/commit`- Turns file changes into commits.
+- `/pull-request`- Writes the description for a pull request.
 
-## From pstack
+## From others
 
-Copied from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack)
+Skills copied from other people, credited on each line.
 
-- `/bro`- Restates the last message in plain language, no jargon.
-- `/unslop`- Cuts AI tells from writing.
+- `/bro`- Restates the last message in plain language, no jargon. From Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack).
+- `/unslop`- Cuts AI tells from writing. From Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack).
+
