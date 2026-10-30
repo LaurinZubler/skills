@@ -14,10 +14,11 @@ Leading words that `/sub` takes as settings (a model, an effort, or a permission
 Take the first of these that exists:
 
 1. A path or plan the user passed as the argument.
-2. The plan file this conversation wrote or approved in plan mode, under `~/.claude/plans/`.
-3. The most recently modified file in `~/.claude/plans/`. Say which file you picked, since it's a guess.
+2. A plan shown earlier in this conversation, such as the one `/write-plan` returned. Pass it inline, verbatim.
+3. The plan file this conversation wrote or approved in plan mode, under `~/.claude/plans/`.
+4. The most recently modified file in `~/.claude/plans/`. Say which file you picked, since it's a guess.
 
-Read the whole file. If it's empty or isn't an implementation plan, stop and say so. If the plan refers to the conversation for something it needs, that's a gap in the plan: tell the user and let them fix the plan before you hand it on.
+Read the whole file, when it is one. If it's empty or isn't an implementation plan, stop and say so. If the plan refers to the conversation for something it needs, that's a gap in the plan: tell the user and let them fix the plan before you hand it on.
 
 ## Hand it to /sub
 

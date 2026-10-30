@@ -58,13 +58,11 @@ Check whether the folder is ignored, with `git check-ignore -q .develop`. If it 
 
 ## Draft the plan
 
-Invoke the `write-plan` skill. Its task is the absolute path of `context.md`, introduced as the agreed summary to plan from, followed by these lines:
+Invoke the `write-plan` skill, telling it develop invoked it, so it returns the plan without a stop of its own. Its task is the absolute path of `context.md`, introduced as the agreed summary to plan from, followed by these lines:
 
 > The `Test seams` column is the whole test plan: the builder tests at these seams and nowhere else, so a seam left out goes untested. Write `none` for a unit that changes data or configuration rather than behaviour, and put an executable check with its expected values in `## Verification` instead.
 
-Then tell it to save the plan to `plan.md` in the run folder.
-
-`write-plan` shows the plan when it's done.
+Write the plan it returns to `plan.md` in the run folder, verbatim, replacing any earlier draft, and show it to the user. If it returned a blocker or a question instead of a plan, show that and write nothing.
 
 ## Get approval
 
@@ -86,7 +84,7 @@ In TDD mode, add this section to the end of the approved `plan.md`, so the build
 Implement every unit with test-driven development, as defined in `<absolute path of tdd.md>`. Read it before you start. Test at the seams the Work units table lists and nowhere else, and write no tests for a unit whose seams are `none`.
 ```
 
-Then invoke the `execute-plan` skill with the absolute path of `plan.md`. Leave plan mode first if the session is in it. Keep only the report it returns: the files changed or commits made, the verification results, and the deviations from the plan.
+Then invoke the `execute-plan` skill with the absolute path of `plan.md`. Leave plan mode first if the session is in it. Keep only the report it returns: the files changed or commits made, the verification results, and the deviations from the plan. Write it to `report.md` in the run folder, verbatim, so it survives the conversation being compacted.
 
 # 5. Review
 
@@ -110,8 +108,10 @@ Invoke the `sub` skill with `opus medium` and this brief, filling in the base br
 >
 > Return the table and nothing else.
 
+Write the table it returns to `findings.md` in the run folder, verbatim.
+
 ## Stop
 
 Show the user the build report and the findings table, then stop. develop is done. What to do about the findings is the user's call, and the numbered rows are there so they can point at the ones they want. When the work was left uncommitted, say that plainly and offer to commit it, rather than reporting as though it had landed.
 
-Then resolve the run folder. A run is clean when the findings table is empty and the build reported no deviations and nothing left undone: delete `.develop/<feature>/` and say you did, since git history is the record from there. Otherwise keep the folder and name its absolute path, so the user can find the context and plan behind the findings.
+Then resolve the run folder. Judge it from `report.md` and `findings.md`, not from memory, since the conversation may have been compacted since. A run is clean when the findings table is empty and the report lists no deviations and nothing left undone: delete `.develop/<feature>/` and say you did, since git history is the record from there. Otherwise keep the folder and name its absolute path, so the user can find the findings, the report, and the context and plan behind them.

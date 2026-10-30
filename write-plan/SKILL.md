@@ -1,9 +1,9 @@
 ---
 name: write-plan
-description: Has a fresh read-only subagent research a task and write an implementation plan, through /sub in plan mode (opus, medium effort by default), then saves the plan where /execute-plan finds it. Use when the user asks to plan, or write a plan for, a change without filling this conversation with the research. Not for executing the plan.
+description: Has a fresh read-only subagent research a task and write an implementation plan, through /sub in plan mode (opus, medium effort by default), then returns the plan without saving a file. Use when the user asks to plan, or write a plan for, a change without filling this conversation with the research. Not for executing the plan.
 ---
 
-`write-plan` in this document means you, the agent running this skill. You don't research or plan anything yourself. You hand the task to `/sub` in plan mode, save the plan that comes back, and show it to the user.
+`write-plan` in this document means you, the agent running this skill. You don't research or plan anything yourself. You hand the task to `/sub` in plan mode and return the plan that comes back. You write no file.
 
 ## Read the arguments
 
@@ -49,10 +49,10 @@ Invoke the `sub` skill with the settings, then `plan`, then the task followed by
 > <how to check the whole change works end to end, with commands and expected results>
 > ```
 
-## Save it
-
-The subagent can't write files, so you save the plan, verbatim. If the caller named a path for the plan, save it there, overwriting an earlier draft. Otherwise save it to `~/.claude/plans/<slug>.md`, where `<slug>` is the title in lowercase kebab-case, and add a number if the file already exists. If the subagent returned something that isn't a plan, such as a blocker or a question, don't save it: show it to the user instead.
-
 ## Report
 
-Show the user the plan and the path you saved it to. Put the Open Questions first if there are any, since they decide whether the plan is ready. Then say the plan runs with `/execute-plan <path>` once they approve it. Don't execute it yourself.
+Return the plan verbatim. Don't save it: the plan stays in the conversation, and a caller that needs it on disk, such as develop, writes it itself. If the subagent returned something that isn't a plan, such as a blocker or a question, show that instead.
+
+When another skill invoked you, stop there. It has its own stops for the user, so don't add one it didn't ask for.
+
+Otherwise put the Open Questions first if there are any, since they decide whether the plan is ready. Then say the plan runs with `/execute-plan` in this conversation once they approve it. Don't execute it yourself.

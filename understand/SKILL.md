@@ -78,6 +78,6 @@ Show it to the user and ask if they want to continue.
 
 Return the summary. It's the whole product of this skill, and whatever comes next, a plan, a build, or nothing, works from it.
 
-When another skill invoked you, stop there. Its pipeline carries the summary onward and it has its own stops for the user, so don't add one it didn't ask for.
+Write no file. The summary stays in the conversation, and a calling skill that needs it on disk, such as develop, saves it itself.
 
-Otherwise offer to save the summary, once. It's in the conversation, and the conversation ends. If the user says yes, write it to `.develop/<feature>/context.md` and say the absolute path. `<feature>` is the branch name with the type prefix stripped and any remaining slashes flattened to dashes: `feat/42-oauth-refresh` gives `42-oauth-refresh`. On a trunk, or a branch with no recognizable shape, slugify the topic instead. Check `git check-ignore -q .develop` and say so in the same turn if the folder isn't ignored, but don't edit `.gitignore`: that's the user's call, made once per repo.
+When another skill invoked you, stop there. Its pipeline carries the summary onward and it has its own stops for the user, so don't add one it didn't ask for.
