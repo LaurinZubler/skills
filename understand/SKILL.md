@@ -1,11 +1,11 @@
 ---
 name: understand
-description: Interviews you about a feature or change until it is clear, verifies the facts the input asserts, and returns a checkpoint of what was settled and what is out of scope. Use before planning or building, when a request is too vague to plan against, or when another skill asks for it. Not for writing the plan and not for writing code.
+description: Interviews you about a feature or change until it is clear, verifies the facts the input asserts, and returns a context of what was settled and what is out of scope. Use before planning or building, when a request is too vague to plan against, or when another skill asks for it. Not for writing the plan and not for writing code.
 ---
 
 `understand` in this document means you, the top-level agent running this skill. Everything it spawns is a subagent, and no subagent can reach the user, so every question for the user happens in one of your own turns.
 
-Interview the user about an idea until it's clear enough to plan against, then hand back a checkpoint summary of what was settled. This skill decides nothing about implementation, proposes no design, and writes no code. It ends the moment the understanding is agreed.
+Interview the user about an idea until it's clear enough to plan against, then hand back a context: a summary of what was settled. This skill decides nothing about implementation, proposes no design, and writes no code. It ends the moment the understanding is agreed.
 
 Every spawn below uses the same shape: a sentence telling you what to spawn, then the brief in a quote block. Everything inside the quote block goes into the subagent's prompt. Everything outside it is yours.
 
@@ -15,7 +15,7 @@ Every spawn below uses the same shape: a sentence telling you what to spawn, the
 
 Figure out what the user wants from whatever you were given: a written prompt, a GitHub issue (number or link), a linked file, or the arguments a calling skill passed on. If nothing was given, detect a GitHub issue from the branch name, recent commits, or session history. If that finds nothing, ask directly what they want to do.
 
-When the input is a GitHub issue, read it with `gh issue view <number> --comments` and carry its body into the Checkpoint `## Context`. Read the comments too, since that's usually where an issue gets amended.
+When the input is a GitHub issue, read it with `gh issue view <number> --comments` and carry its body into the context's `## Background`. Read the comments too, since that's usually where an issue gets amended.
 
 ## Research
 
@@ -23,11 +23,11 @@ Look up only what the issue or idea names explicitly: a file, module, or functio
 
 Spawn an `Explore` subagent for the lookup instead of reading files yourself, so the raw file contents stay out of your context and you keep only the answer.
 
-Verify every number the input asserts. A row count, a threshold, a "13 rows" in a table, an expected filter result: check it against the real data before it reaches the checkpoint. Specs go stale between being written and being built, and a control number that no longer holds is the cheapest possible place to catch a changed requirement. Report what you found either way, and flag any figure that moved.
+Verify every number the input asserts. A row count, a threshold, a "13 rows" in a table, an expected filter result: check it against the real data before it reaches the context. Specs go stale between being written and being built, and a control number that no longer holds is the cheapest possible place to catch a changed requirement. Report what you found either way, and flag any figure that moved.
 
 ## Grill
 
-Interview the user about the context and what Research found until you reach a shared understanding. Map decisions as a **design tree**: each decision branches into the decisions that depend on it. Treat scope boundaries as a normal branch, since "what's out of scope" is a question like any other.
+Interview the user about the context and what Research found until you reach a shared understanding. Map decisions as a **design tree**: each decision branches into the decisions that depend on it. Treat scope boundaries as a normal branch, since "what's out of scope" is a question like any other. So is what done looks like: every tree has a branch for the checks that prove the change works, each with the result it should give.
 
 Work the tree one question at a time. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Pick the single most important open frontier question and ask it.
 
@@ -43,12 +43,12 @@ Finding facts is your job, not the user's. When a frontier question needs a fact
 
 Continue until the frontier is empty and you have visited every branch.
 
-## Checkpoint
+## Context
 
-Write a structured summary with these sections:
+Write the context, a structured summary with these sections:
 
 ```markdown
-## Context
+## Background
 
 <the issue or idea that started this>
 
@@ -63,6 +63,10 @@ Write a structured summary with these sections:
 ## Out of Scope
 
 <what was explicitly excluded>
+
+## Done when
+
+<the checks that prove the change works, one per line, each with its expected result: "the export has 13 rows", "an expired token gets a 401">
 ```
 
 Show it to the user and ask if they want to continue.
@@ -76,4 +80,4 @@ Return the summary. It's the whole product of this skill, and whatever comes nex
 
 When another skill invoked you, stop there. Its pipeline carries the summary onward and it has its own stops for the user, so don't add one it didn't ask for.
 
-Otherwise offer to save the summary, once. It's in the conversation, and the conversation ends. If the user says yes, write it to `.develop/<feature>/checkpoint.md` and say the absolute path. `<feature>` is the branch name with the type prefix stripped and any remaining slashes flattened to dashes: `feat/42-oauth-refresh` gives `42-oauth-refresh`. On a trunk, or a branch with no recognizable shape, slugify the topic instead. Check `git check-ignore -q .develop` and say so in the same turn if the folder isn't ignored, but don't edit `.gitignore`: that's the user's call, made once per repo.
+Otherwise offer to save the summary, once. It's in the conversation, and the conversation ends. If the user says yes, write it to `.develop/<feature>/context.md` and say the absolute path. `<feature>` is the branch name with the type prefix stripped and any remaining slashes flattened to dashes: `feat/42-oauth-refresh` gives `42-oauth-refresh`. On a trunk, or a branch with no recognizable shape, slugify the topic instead. Check `git check-ignore -q .develop` and say so in the same turn if the folder isn't ignored, but don't edit `.gitignore`: that's the user's call, made once per repo.
