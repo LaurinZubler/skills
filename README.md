@@ -13,8 +13,7 @@ Tools
 
 Workflows
 
-- `/develop`- Builds a simple feature. Steps: `/understand`, `/write-plan`, `/execute-plan`, `/code-review`.
-- `/develop-tdd`- Builds a feature using tdd. Steps: `/understand`, `/write-plan`, `/execute-plan`, `/code-review`. Inspired by [Matt Pocock's implement](https://github.com/mattpocock/skills/tree/main/skills/engineering/implement).
+- `/develop`- Builds a feature, test-first with `/develop tdd`. Steps: `/understand`, `/write-plan`, `/execute-plan`, `/code-review`. Inspired by [Matt Pocock's implement](https://github.com/mattpocock/skills/tree/main/skills/engineering/implement).
 
 Git
 

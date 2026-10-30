@@ -1,6 +1,6 @@
 ---
 name: develop
-description: Builds a simple feature end to end, without test-driven development. Interviews you with /understand, has /write-plan draft a plan you approve, has /execute-plan build it, then runs a final bug review. For work that needs tests written first, use /develop-tdd.
+description: Builds a feature end to end, optionally test-first. Interviews you with /understand, puts the work on a feature branch, has /write-plan draft a plan you approve, has /execute-plan build it, then runs a final bug review. A leading `tdd` argument, e.g. `/develop tdd add oauth refresh`, builds with test-driven development.
 disable-model-invocation: true
 ---
 
@@ -8,13 +8,17 @@ disable-model-invocation: true
 
 Develop the current idea end to end. It calls out to four other skills: `understand` for step 1, `write-plan` for step 3, `execute-plan` for step 4, and `sub` for the final review in step 5, which runs `/code-review`, a Claude Code built-in.
 
+## Read the mode
+
+If the first word of the arguments is `tdd`, the run is in TDD mode: the build follows the test-first rules in `tdd.md`, next to this skill file. Drop the word and pass the rest on as the idea. Without it, the build writes the tests the plan names but isn't held to the TDD rules. Only steps 3 and 4 differ between the modes.
+
 Run this skill on `opus`. You hold the whole run and judge everything that comes back to you. If you're on something weaker, say so in your first turn and offer the user `/model opus` before you go any further.
 
 Don't do the steps' work yourself: no reading the codebase, no drafting the plan, no writing code. Each step hands its work to a skill so that work stays out of this conversation.
 
 # 1. Understand
 
-Invoke the `understand` skill, passing on whatever the user gave `/develop` along with the fact that develop invoked it, so it knows not to add a stop of its own. It interviews the user and returns a context, a summary under `## Background`, `## What Research found`, `## Settled Decisions`, `## Out of Scope` and `## Done when`. That context is the plan's input below.
+Invoke the `understand` skill, passing on whatever the user gave `/develop` along with the fact that develop invoked it, so it knows not to add a stop of its own. It interviews the user, verifies the facts the input asserts, and returns a context, a summary under `## Background`, `## What Research found`, `## Settled Decisions`, `## Out of Scope` and `## Done when`. That context is the plan's input below.
 
 It only returns once the user has agreed the context, so don't re-open it. Keep it word for word: everything downstream is judged against it, and a paraphrase is a requirement rewritten.
 
@@ -54,7 +58,11 @@ Check whether the folder is ignored, with `git check-ignore -q .develop`. If it 
 
 ## Draft the plan
 
-Invoke the `write-plan` skill. Its task is the absolute path of `context.md`, introduced as the agreed summary to plan from. Tell it to save the plan to `plan.md` in the run folder.
+Invoke the `write-plan` skill. Its task is the absolute path of `context.md`, introduced as the agreed summary to plan from, followed by these lines:
+
+> The `Test seams` column is the whole test plan: the builder tests at these seams and nowhere else, so a seam left out goes untested. Write `none` for a unit that changes data or configuration rather than behaviour, and put an executable check with its expected values in `## Verification` instead.
+
+Then tell it to save the plan to `plan.md` in the run folder.
 
 `write-plan` shows the plan when it's done.
 
@@ -62,7 +70,7 @@ Invoke the `write-plan` skill. Its task is the absolute path of `context.md`, in
 
 If the plan has an `## Open Questions` section, those get answered before anything else. Put them to the user, add each answer to `## Settled Decisions` in `context.md`, then invoke `write-plan` again exactly as above. Approval must never be what closes an open question, since the build would then implement a spec nobody settled.
 
-Then ask the user with `AskUserQuestion` whether to build this plan, naming its path.
+Then ask the user with `AskUserQuestion` whether to build this plan, naming its path and the mode, with or without TDD. The seams are in front of them now, so this is where they can still switch. If they do, carry on in the new mode.
 
 If they approve, continue. If they don't, ask what they want changed, then invoke `write-plan` again as above, adding the path of the rejected `plan.md` and their answer. Repeat until a plan is approved. Stop only if the user rejects without saying what to change, since a second draft on the same input would just produce the same plan.
 
@@ -70,7 +78,15 @@ If they approve, continue. If they don't, ask what they want changed, then invok
 
 ## Build
 
-Invoke the `execute-plan` skill with the absolute path of `plan.md`. Leave plan mode first if the session is in it. Keep only the report it returns: the files changed or commits made, the verification results, and the deviations from the plan.
+In TDD mode, add this section to the end of the approved `plan.md`, so the builder reads the test-first rules before it starts. Use the absolute path of `tdd.md` in this skill's directory; Claude Code gives you that directory when the skill loads. Don't read `tdd.md` yourself: it's for the builder. Without TDD, leave the plan as it is.
+
+```markdown
+## How to build
+
+Implement every unit with test-driven development, as defined in `<absolute path of tdd.md>`. Read it before you start. Test at the seams the Work units table lists and nowhere else, and write no tests for a unit whose seams are `none`.
+```
+
+Then invoke the `execute-plan` skill with the absolute path of `plan.md`. Leave plan mode first if the session is in it. Keep only the report it returns: the files changed or commits made, the verification results, and the deviations from the plan.
 
 # 5. Review
 
