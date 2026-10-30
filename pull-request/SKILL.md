@@ -3,7 +3,7 @@ name: pull-request
 description: Writes the description for a pull request. Use whenever the user asks to open a PR, write or rewrite a PR description, or fill in a PR body. Not for reviewing the code in a PR.
 ---
 
-# Pull request
+`pull-request` in this document means you, the agent running this skill. Write the description for a pull request.
 
 A PR description has one reader, the person who has to review the change without your last three hours of context. Give them the problem, the shape of the solution, and a way to check it. Then stop.
 
@@ -11,10 +11,7 @@ Two failure modes. The first is the empty template, every heading present, each 
 
 Length follows the change. A one-line fix gets three lines. A 40-file refactor gets 300 words. Never pad a section to fill it out.
 
-This skill only reads. It runs `git` and `gh` read commands and nothing else. Don't run the test suite,
-the linter, the typechecker, or a build in order to write a description. CI runs all of that on every
-PR and posts the verdict on the PR itself, where the reviewer already sees it. A local run adds nothing
-to the description and costs minutes.
+This skill only reads. It runs `git` and `gh` read commands and nothing else. Don't run the test suite, the linter, the typechecker, or a build in order to write a description. CI runs all of that on every PR and posts the verdict on the PR itself, where the reviewer already sees it. A local run adds nothing to the description and costs minutes.
 
 ## Title
 
@@ -71,9 +68,17 @@ Leave e2e out entirely, ticked or not. It runs against a deployed environment on
 
 Nothing else, and no `## Screenshots` block: images never get attached here, so a heading asking for them is a heading nobody fills. No checklist of tickboxes. They get rubber-stamped, and a rubber-stamped tickbox is worse than none at all because it looks like a signal. No "Type of change" radio list either; the title's `type` already carries it.
 
-## Workflow
+## What not to write
 
-### 1. Establish the range
+- **"This PR...".** The reader knows. Start with the substance.
+- **Headings left empty**, or filled with `n/a`, or holding a `<!-- delete if not applicable -->` comment nobody deleted. Absent means not applicable.
+- **A file-by-file walkthrough.** That's the diff's job.
+- **Follow-up work you thought of yourself.** A PR description records the change, it doesn't pitch the next one. Unless there's a ticket or the author asked for it, leave it out.
+- **Adjectives doing a number's work.** "Significantly faster", "much cleaner", "robust". Measure it or drop it.
+- **Pass or fail claims.** "All tests green", "214 passing". CI already said so on the PR, and if it didn't, you're guessing.
+- **Apologies and hedges.** "Sorry this is big", "hope this makes sense". Say what's true and stop.
+
+## 1. Establish the range
 
 ```
 git branch --show-current
@@ -82,7 +87,7 @@ gh pr status --json number,baseRefName,title,body
 
 If a PR already exists for the branch, you're rewriting its body. Read the current one first and keep whatever in it is still true. If not, find the base branch. It's whatever the branch actually forked from, which in a GitFlow repo is usually `dev`, and for a stacked PR is the parent feature branch. Don't assume the repository default branch.
 
-### 2. Read the diff and the commits
+## 2. Read the diff and the commits
 
 ```
 git log --oneline <base>..HEAD
@@ -94,21 +99,21 @@ Read the diff itself, not just the stat. The commit subjects tell you how the wo
 
 Where a claim in the description can be checked, check it. If you're going to write that a spec guards the boundary, open the spec. If you're going to write that nothing else calls the function, grep for it. A confidently wrong PR description costs a reviewer more than no description at all.
 
-### 3. Collect the links
+## 3. Collect the links
 
 Find the issue this closes, from the branch name, the commit bodies, or by asking. If an issue drove the work, read it (`gh issue view <n> --comments`). The comments are usually where the requirement got amended, and the amended version is what the reviewer judges against.
 
-### 4. Pick the blocks
+## 4. Pick the blocks
 
 Walk the optional-block table and check each trigger against what you read in step 2. Decide once, before writing, instead of working it out while typing. Then write only the blocks that survived.
 
-### 5. Write it
+## 5. Write it
 
 Core sections first, optional blocks after, in table order. Prose in `## Context`, bullets in `## Summary`. Markdown-link every issue, CI run, and PR you reference so the reviewer can click through.
 
 Show the draft to the user before it goes anywhere. They know things about the change that aren't in the diff.
 
-### 6. Deliver it
+## 6. Deliver it
 
 Write the body to a file and pass the file. Piping markdown through shell quoting mangles backticks and newlines.
 
@@ -119,12 +124,6 @@ gh pr edit <number> --body-file <path>
 
 Run these only when the user asked for it in that turn. Writing a description is not permission to open or update a PR, and never permission to push.
 
-## What not to write
+## Report
 
-- **"This PR...".** The reader knows. Start with the substance.
-- **Headings left empty**, or filled with `n/a`, or holding a `<!-- delete if not applicable -->` comment nobody deleted. Absent means not applicable.
-- **A file-by-file walkthrough.** That's the diff's job.
-- **Follow-up work you thought of yourself.** A PR description records the change, it doesn't pitch the next one. Unless there's a ticket or the author asked for it, leave it out.
-- **Adjectives doing a number's work.** "Significantly faster", "much cleaner", "robust". Measure it or drop it.
-- **Pass or fail claims.** "All tests green", "214 passing". CI already said so on the PR, and if it didn't, you're guessing.
-- **Apologies and hedges.** "Sorry this is big", "hope this makes sense". Say what's true and stop.
+Show the user the title and the body. If you created or updated the PR, give its link.

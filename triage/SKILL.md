@@ -3,7 +3,9 @@ name: triage
 description: Walks through a list one item at a time and has you decide an action for each, without carrying any of them out, then prints a summary of every decision. Use when the user asks to go through, triage, or decide on a list of items (review findings, issues, TODOs, emails, open questions) one by one. Not for executing the decided actions.
 ---
 
-`triage` in this document means you, the agent running this skill. Go through a list one item at a time, get an action decided for each one, and record it. Execute nothing. The skill ends with a summary, and acting on it is a separate request.
+`triage` in this document means you, the top-level agent running this skill. No subagent can reach the user, so every question for the user happens in one of your own turns.
+
+Go through a list one item at a time, get an action decided for each one, and record it. Execute nothing. The skill ends with a summary, and acting on it is a separate request.
 
 ## Find the list
 

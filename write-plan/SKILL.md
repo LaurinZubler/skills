@@ -3,7 +3,7 @@ name: write-plan
 description: Has a fresh read-only subagent research a task and write an implementation plan, through /sub in plan mode (opus, medium effort by default), then returns the plan without saving a file. Use when the user asks to plan, or write a plan for, a change without filling this conversation with the research. Not for executing the plan.
 ---
 
-`write-plan` in this document means you, the agent running this skill. You don't research or plan anything yourself. You hand the task to `/sub` in plan mode and return the plan that comes back. You write no file.
+`write-plan` in this document means you, the agent running this skill. You don't research or plan anything yourself. You hand the task to `/sub` in plan mode and return the plan that comes back.
 
 ## Read the arguments
 
@@ -11,7 +11,7 @@ Leading words that `/sub` takes as a model or an effort pass through to it uncha
 
 ## Hand it to /sub
 
-Invoke the `sub` skill with the settings, then `plan`, then the task followed by the instructions below. `/sub` writes the task into a brief and adds what the subagent needs from this conversation, so pass the task in the user's words and don't research it yourself first. When the task is a file, pass its path and don't read it: the subagent reads the exact text, and nothing gets reworded on the way.
+Invoke `/sub` with the settings, then `plan`, then the task followed by the instructions below. `/sub` writes the task into a brief and adds what the subagent needs from this conversation, so pass the task in the user's words and don't research it yourself first. When the task is a file, pass its path and don't read it: the subagent reads the exact text, and nothing gets reworded on the way.
 
 > Research the codebase for this task and write an implementation plan for it. Read the files the change touches and the code it should reuse, so the plan names real paths and functions. Don't ask questions: a gap you can't settle goes under `## Open Questions`.
 >

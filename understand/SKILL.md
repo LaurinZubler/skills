@@ -74,10 +74,10 @@ Show it to the user and ask if they want to continue.
 - **Yes**: the understanding is settled, so finish below.
 - **No**: ask what's missing or wrong, add it to the tree as a new branch, and work the frontier again.
 
-## Finish
+## Report
 
-Return the summary. It's the whole product of this skill, and whatever comes next, a plan, a build, or nothing, works from it.
+Return the context. It's the whole product of this skill, and whatever comes next, a plan, a build, or nothing, works from it.
 
-Write no file. The summary stays in the conversation.
+Write no file. The context stays in the conversation.
 
-When another skill invoked you, stop there. Its pipeline carries the summary onward and it has its own stops for the user, so don't add one it didn't ask for.
+When another skill invoked you, stop there. Its pipeline carries the context onward and it has its own stops for the user, so don't add one it didn't ask for.

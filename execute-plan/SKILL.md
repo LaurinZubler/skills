@@ -22,7 +22,7 @@ Read the whole file, when it is one. If it's empty or isn't an implementation pl
 
 ## Hand it to /sub
 
-Invoke the `sub` skill with the settings, then this brief. Fill in the plan's absolute path. If the plan was passed inline rather than as a file, replace the first sentence with "Implement the approved implementation plan below." and append the plan verbatim under a `## Plan` heading.
+Invoke `/sub` with the settings, then this brief. Fill in the plan's absolute path. If the plan was passed inline rather than as a file, replace the first sentence with "Implement the approved implementation plan below." and append the plan verbatim under a `## Plan` heading.
 
 > Implement the approved implementation plan in `<absolute path to the plan file>`. Read the whole file first. Implement it completely, as written.
 >
