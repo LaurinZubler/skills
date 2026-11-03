@@ -20,6 +20,14 @@ Take the first of these that exists:
 
 Read the whole file, when it is one. If it's empty or isn't an implementation plan, stop and say so. If the plan refers to the conversation for something it needs, that's a gap in the plan: tell the user and let them fix the plan before you hand it on.
 
+## Resolve open questions
+
+The subagent can't reach the user, so anything the plan leaves open gets settled here. If the plan has no `## Open Questions` section, or it's empty, skip this step.
+
+Otherwise invoke `/triage` on the questions in that section, telling it execute-plan invoked it, so it returns after the summary without a stop of its own. Then replace the `## Open Questions` section with `## Resolved Questions`: each question followed by the user's answer, word for word as triage recorded it. Edit the plan file in place, or the inline plan when there's no file, and leave the rest of the plan unchanged.
+
+If an answer contradicts the plan's Approach or Work units, such as ruling out something a unit does, stop and tell the user the plan needs redrafting. Don't hand on a spec that argues with itself.
+
 ## Hand it to /sub
 
 Invoke `/sub` with the settings, then this brief. Fill in the plan's absolute path. If the plan was passed inline rather than as a file, replace the first sentence with "Implement the approved implementation plan below." and append the plan verbatim under a `## Plan` heading.
@@ -27,6 +35,7 @@ Invoke `/sub` with the settings, then this brief. Fill in the plan's absolute pa
 > Implement the approved implementation plan in `<absolute path to the plan file>`. Read the whole file first. Implement it completely, as written.
 >
 > - The plan is the spec. Do what it says, in the order its dependencies imply, and nothing it doesn't ask for. Its Out of Scope section binds you.
+> - `## Resolved Questions`, when the plan has one, settles what the plan left open. Treat it as part of the spec.
 > - Where the plan names tests, write them and watch them fail before you make them pass.
 > - Commit only if the plan or the repo's rules say to. Otherwise leave the work in the working tree. Never push.
 > - When something blocks a unit, finish the units that don't depend on it, then report the blocker rather than working around the plan.
