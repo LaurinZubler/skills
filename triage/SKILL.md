@@ -44,4 +44,6 @@ Below it, group the counts by kind of action (e.g. 4 fix, 3 skip, 1 follow-up is
 
 The one exception is a list that came from a file as a table. Then also add an `Action` column to that table in the file, with each row's decided action, and leave the rest of the file unchanged. Say that you did it below the summary.
 
-Then stop. Don't start on any action, and don't offer to unless the user asks what comes next.
+When another skill invoked you, return after the summary. It carries the decisions onward, so don't add a stop it didn't ask for.
+
+Otherwise stop. Don't start on any action, and don't offer to unless the user asks what comes next.
