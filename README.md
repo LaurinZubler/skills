@@ -7,6 +7,11 @@
 - `/bro` - Restates the last message in plain language, no jargon. Copied from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack).
 - `/unslop` - Cuts AI tells from writing. Copied from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack).
 
+**Product**
+
+- `/describe-ui` - Describes an existing app's screens, flows and components in plain text.
+- `/write-requirements` - Writes an existing app's functional requirements as a story map with acceptance criteria.
+
 **Development**
 
 - `/understand` - Asks questions until the context is clear. Inspired by [Matt Pocock's grilling](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling).
